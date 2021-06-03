@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import User from "../models/Users";
-import bcrypt from "bcrypt";
+import User, { UserI } from "../models/Users";
 
 export const register = async (
   req: Request,
@@ -9,21 +8,19 @@ export const register = async (
 ) => {
   const { username, email, password } = req.body;
 
-  const salt = await bcrypt.genSalt(10);
-  const hashPassword = await bcrypt.hash(password, salt);
-
   try {
     const user = await User.create({
       username,
       email,
-      password: hashPassword,
+      password,
     });
-
+    //201-created
     res.status(201).json({
       success: true,
       user: user,
     });
   } catch (error) {
+    //500 - internal server error
     res.status(500).json({
       success: false,
       error: error.message,
@@ -31,8 +28,47 @@ export const register = async (
   }
 };
 
-export const login = (req: Request, res: Response, next: NextFunction) => {
-  res.send("login route");
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    //400-bad request
+    res.status(400).json({
+      success: false,
+      error: "Please provide the email and password",
+    });
+  }
+
+  try {
+    const user = await User.findOne({ email: email }).select("password");
+
+    if (!user) {
+      //404-Not found
+      res.status(404).json({
+        success: false,
+        error: "Invalid credentials",
+      });
+    }
+
+    const isMatch = await (user as UserI).matchPasswords(password);
+
+    if (!isMatch) {
+      res.status(404).json({ success: false, error: "Invalid credentials" });
+    }
+
+    //200 -ok
+    res.status(200).json({
+      success: true,
+      token: "fake token for now",
+    });
+  } catch (error) {
+    //500- Internal server error
+    res.status(500).json({ success: false, error: error.message });
+  }
 };
 
 export const forgotPassword = (
