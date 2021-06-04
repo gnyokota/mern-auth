@@ -1,5 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import User, { UserI } from "../models/Users";
+import {
+  BadRequestError,
+  NotFoundError,
+  InternalServerError,
+  UnauthorizedError,
+  ForbiddenError,
+} from "../utils/error.util";
 
 export const register = async (
   req: Request,
@@ -15,16 +22,9 @@ export const register = async (
       password,
     });
     //201-created
-    res.status(201).json({
-      success: true,
-      user: user,
-    });
+    sendToken(user, 201, res);
   } catch (error) {
-    //500 - internal server error
-    res.status(500).json({
-      success: false,
-      error: error.message,
-    });
+    next(error);
   }
 };
 
@@ -36,11 +36,8 @@ export const login = async (
   const { email, password } = req.body;
 
   if (!email || !password) {
-    //400-bad request
-    res.status(400).json({
-      success: false,
-      error: "Please provide the email and password",
-    });
+    //400-Bad request
+    return next(new BadRequestError("Enter an email AND password"));
   }
 
   try {
@@ -48,26 +45,20 @@ export const login = async (
 
     if (!user) {
       //404-Not found
-      res.status(404).json({
-        success: false,
-        error: "Invalid credentials",
-      });
+      return next(new NotFoundError("Invalid credentials"));
     }
 
     const isMatch = await (user as UserI).matchPasswords(password);
 
     if (!isMatch) {
-      res.status(404).json({ success: false, error: "Invalid credentials" });
+      //404-Not found
+      return next(new UnauthorizedError("Invalid credentials"));
     }
 
-    //200 -ok
-    res.status(200).json({
-      success: true,
-      token: "fake token for now",
-    });
+    //200-ok
+    sendToken(user, 200, res);
   } catch (error) {
-    //500- Internal server error
-    res.status(500).json({ success: false, error: error.message });
+    next(error);
   }
 };
 
@@ -85,4 +76,10 @@ export const resetPassword = (
   next: NextFunction
 ) => {
   res.send("Reset password route");
+};
+
+//It is using the method created whithin the user model
+const sendToken = (user: UserI, statusCode: number, res: Response) => {
+  const token = user.getToken();
+  res.status(statusCode).json({ success: true, token: token });
 };

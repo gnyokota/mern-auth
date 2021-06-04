@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import routes from "./routes/auth.routes";
 import connectDB from "./config/db.config";
+import errorHandler from "./middlewares/error.mid";
 
 dotenv.config({ path: "./config.env" });
 
@@ -11,6 +12,9 @@ connectDB();
 app.use(express.json());
 app.use(cors());
 app.use("/api/v1/auth", routes);
+
+//Error handler should be the last middleware
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
