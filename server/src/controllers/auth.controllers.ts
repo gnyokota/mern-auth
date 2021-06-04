@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
+
 import User, { UserI } from "../models/Users";
 import {
   BadRequestError,
@@ -41,14 +43,14 @@ export const login = async (
   }
 
   try {
-    const user = await User.findOne({ email: email }).select("password");
+    const user = await User.findOne({ email: email }).select("email password");
 
     if (!user) {
       //404-Not found
       return next(new NotFoundError("Invalid credentials"));
     }
 
-    const isMatch = await (user as UserI).matchPasswords(password);
+    const isMatch = await user.matchPasswords(password);
 
     if (!isMatch) {
       //404-Not found
@@ -79,7 +81,16 @@ export const resetPassword = (
 };
 
 //It is using the method created whithin the user model
+//to get a random secret:type node in termonal => require('crypto').randomBytes(35).toString('hex')
+const getToken = (user: UserI) => {
+  return jwt.sign(
+    { _id: user._id, email: user.email },
+    process.env.JWT_SECRET as string,
+    { expiresIn: process.env.JWT_EXPIRES as string }
+  );
+};
+
 const sendToken = (user: UserI, statusCode: number, res: Response) => {
-  const token = user.getToken();
+  const token = getToken(user);
   res.status(statusCode).json({ success: true, token: token });
 };

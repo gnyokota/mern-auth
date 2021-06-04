@@ -4,6 +4,7 @@ import cors from "cors";
 import routes from "./routes/auth.routes";
 import connectDB from "./config/db.config";
 import errorHandler from "./middlewares/error.mid";
+import protectedRoute from "./routes/protect.routes";
 
 dotenv.config({ path: "./config.env" });
 
@@ -12,6 +13,7 @@ connectDB();
 app.use(express.json());
 app.use(cors());
 app.use("/api/v1/auth", routes);
+app.use("/api/v1/protected", protectedRoute);
 
 //Error handler should be the last middleware
 app.use(errorHandler);
@@ -27,4 +29,4 @@ process.on("unhandledRejection", (error, promise) => {
   server.close(() => process.exit(1));
 });
 
-//50:00
+//1:16:18

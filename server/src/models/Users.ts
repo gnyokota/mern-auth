@@ -1,6 +1,5 @@
 import { Schema, Document, model } from "mongoose";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
 dotenv.config({ path: "./config.env" });
@@ -12,7 +11,6 @@ export interface UserI extends Document {
   resetPassWord: string;
   resetPassExpire: Date;
   matchPasswords: (password: string) => Promise<boolean>;
-  getToken: () => string;
 }
 
 const UserSchema = new Schema<UserI>({
@@ -50,15 +48,6 @@ UserSchema.pre<UserI>("save", async function (this, next) {
 
 UserSchema.methods.matchPasswords = async function (password: string) {
   return await bcrypt.compare(password, this.password);
-};
-
-//to get a random secret:type node in termonal => require('crypto').randomBytes(35).toString('hex')
-UserSchema.methods.getToken = function () {
-  return jwt.sign(
-    { _id: this._id, email: this.email },
-    process.env.JWT_SECRET as string,
-    { expiresIn: process.env.JWT_EXPIRES as string }
-  );
 };
 
 export default model<UserI>("User", UserSchema);
