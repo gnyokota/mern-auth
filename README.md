@@ -70,3 +70,33 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+# Getting Started with the backend(server)
+
+The following variables should be defined in the .env file:
+
+- PORT (e.g. 3001)
+- MONGO_URI
+- JWT_SECRET
+- JWT_EXPIRES (e.g. 1d)
+- RESET_URL
+- EMAIL_SERVICE
+- EMAIL_USERNAME
+- EMAIL_PASSWORD
+- EMAIL_FROM
+
+## Available Scripts
+
+In the project directory, you can run:
+
+### `npm run dev`
+
+Runs the app in the development mode using nodemon.
+
+### `npm run build`
+
+Compiles the .ts files from src folder into .js files.
+
+### `npm run start`
+
+Compiles the .ts files from src folder into .js files and runs the server.js file.
