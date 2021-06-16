@@ -1,0 +1,65 @@
+$dark-green: #314e52;
+$orange: #f2a154;
+$bege: #f7f6e7;
+$light-grey: #e7e6e1;
+
+.forgot-screen {
+  display: flex;
+
+  &__subtext {
+    color: $orange;
+    font-size: 0.8rem;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 2rem;
+  }
+
+  &__form {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    margin: 6rem auto;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    padding: 2rem;
+
+    &__group {
+      color: $dark-green;
+      display: grid;
+      grid-template-rows: repeat(1fr, 2);
+      margin: 0.25rem 0;
+
+      input {
+        padding: 0.25rem;
+        color: $dark-green;
+        border-radius: 4px;
+        border: 0.5px solid $dark-green;
+      }
+
+      input:focus {
+        outline-color: $dark-green;
+        border: 1px solid;
+      }
+    }
+  }
+
+  &__title {
+    text-align: center;
+    color: $dark-green;
+    font-size: 2rem;
+  }
+
+  &__route {
+    text-align: center;
+    font-size: 0.8rem;
+
+    a {
+      text-decoration: none;
+      color: $orange;
+    }
+
+    a:hover {
+      color: $dark-green;
+      transition: ease-in-out 0.5s;
+    }
+  }
+}

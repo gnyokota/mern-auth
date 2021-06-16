@@ -1,6 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 
+import "./ForgotPassScreen.scss";
+
 const ForgotPassScreen = () => {
   const [email, setEmail] = useState<string>("");
   const [response, setResponse] = useState<string>("");

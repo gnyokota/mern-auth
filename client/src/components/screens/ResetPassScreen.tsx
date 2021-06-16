@@ -3,6 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import { History } from "history";
 
+import "./ResetPassScreen.scss";
+
 type Props = {
   history: History;
 };
@@ -56,12 +58,11 @@ const ResetPassScreen = ({ history }: Props) => {
   return (
     <div className="reset-screen">
       <form className="reset-screen__form" onSubmit={handleResetPassword}>
-        <h3 className="reset-screen_title">Reset Password</h3>
-        {error && <span className="error__message">{error}</span>}
+        <h3 className="reset-screen__title">Reset Password</h3>
+        {error && <span className="error-message">{error}</span>}
         {response && (
-          <span className="reset-screen__subtitle">
-            {response}
-            <Link to="/">Login</Link>
+          <span className="reset-screen__link">
+            {response} <Link to="/">Login</Link>
           </span>
         )}
         <div className="reset-screen__form__group">

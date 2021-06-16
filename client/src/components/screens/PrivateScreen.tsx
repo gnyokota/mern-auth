@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { History } from "history";
 
+import "./PrivateScreen.scss";
+
 type Props = {
   history: History;
 };
@@ -46,12 +48,12 @@ const PrivateScreen = ({ history }: Props) => {
   return error ? (
     <span className="error-message">{error}</span>
   ) : (
-    <>
+    <div className="private-screen">
       <div className="private-screen__message">{response}</div>
-      <button onClick={handleLogout} className="btn btn--secondary">
+      <button onClick={handleLogout} className="btn btn--primary">
         Logout
       </button>
-    </>
+    </div>
   );
 };
 

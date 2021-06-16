@@ -1,4 +1,30 @@
-# Getting Started with the frontend(client)
+<!-- ABOUT THE PROJECT -->
+
+## About The Project
+
+![MERN Auth App](images/Screenshot 2021-06-16 at 17.10.52.png)
+![MERN Auth App](images/Screenshot 2021-06-16 at 17.11.06.png)
+![MERN Auth App](images/Screenshot 2021-06-16 at 17.11.19.png)
+
+This app was built using the MERN-Stack and Typescript. It was built for authentication and authorization.
+
+### Built With
+
+- [MondoDB](https://www.mongodb.com/)
+- [Express](https://expressjs.com/)
+- [React](https://github.com/facebook/create-react-app).
+- [Node.js](https://nodejs.org/en/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [bcrypt](https://www.npmjs.com/package/bcrypt)
+- [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
+- [Sass](https://sass-lang.com/)
+- [axios](https://www.npmjs.com/package/axios)
+
+The password reset was built using [SendGrid](https://sendgrid.com/).
+
+<!-- GETTING STARTED -->
+
+# Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -44,33 +70,3 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
-
-# Getting Started with the backend(server)
-
-The following variables should be defined in the .env file:
-
-- PORT (e.g. 3001)
-- MONGO_URI
-- JWT_SECRET
-- JWT_EXPIRES (e.g. 1d)
-- RESET_URL
-- EMAIL_SERVICE
-- EMAIL_USERNAME
-- EMAIL_PASSWORD
-- EMAIL_FROM
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm run dev`
-
-Runs the app in the development mode using nodemon.
-
-### `npm run build`
-
-Compiles the .ts files from src folder into .js files.
-
-### `npm run start`
-
-Compiles the .ts files from src folder into .js files and runs the server.js file.
