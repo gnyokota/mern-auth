@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import crypto from "crypto";
+
+dotenv.config({ path: "./config.env" });
 
 import User, { UserI } from "../models/Users";
 import {
@@ -7,8 +11,8 @@ import {
   NotFoundError,
   InternalServerError,
   UnauthorizedError,
-  ForbiddenError,
 } from "../utils/error.util";
+import sendEmail from "../utils/sendEmail";
 
 export const register = async (
   req: Request,
@@ -64,20 +68,82 @@ export const login = async (
   }
 };
 
-export const forgotPassword = (
+export const forgotPassword = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  res.send("Forgot password route");
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      return next(new NotFoundError("User not found!"));
+    }
+
+    const resetToken = user.getResetToken();
+    await user.save();
+
+    const urlEnv = process.env.RESET_URL as string;
+
+    const resetUrl = `${urlEnv}/${resetToken}`;
+
+    const messageHtml = `<h1>You have requested a password reset</h1>
+    <p>Please go to this link to reset your password</p>
+    <a href=${resetUrl} clicktracking=off>${resetUrl}</a>`;
+
+    try {
+      await sendEmail({
+        to: user.email,
+        subject: "Password reset requested",
+        text: messageHtml,
+      });
+
+      res.status(200).json({ success: true, data: "email sent" });
+    } catch (error) {
+      user.resetPassToken = undefined;
+      user.resetPassExpire = undefined;
+
+      await user.save();
+      return next(new InternalServerError("Email could not be sent"));
+    }
+  } catch (error) {
+    next(error);
+  }
 };
 
-export const resetPassword = (
+export const resetPassword = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  res.send("Reset password route");
+  const resetToken = crypto
+    .createHash("sha256")
+    .update(req.params.resetToken)
+    .digest("hex");
+
+  try {
+    const user = await User.findOne({
+      resetPassToken: resetToken,
+      resetPassExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return next(new BadRequestError("Invalid reset token"));
+    }
+
+    user.password = req.body.password;
+    user.resetPassToken = undefined;
+    user.resetPassExpire = undefined;
+
+    await user.save();
+
+    res
+      .status(201)
+      .json({ success: true, data: "Password was successfully reset" });
+  } catch (error) {
+    next(error);
+  }
 };
 
 //It is using the method created whithin the user model

@@ -1,0 +1,21 @@
+$dark-green: #314e52;
+$orange: #f2a154;
+$bege: #f7f6e7;
+$light-grey: #e7e6e1;
+
+.navbar {
+  width: 100vw;
+  height: 10vh;
+  background-color: $dark-green;
+  display: flex;
+  align-items: center;
+
+  &__logo {
+    margin: 0 2rem;
+
+    &__link {
+      text-decoration: none;
+      color: $orange;
+    }
+  }
+}
