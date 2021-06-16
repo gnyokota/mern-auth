@@ -2,9 +2,9 @@
 
 ## About The Project
 
-![MERN Auth App](images/Screenshot 2021-06-16 at 17.10.52.png)
-![MERN Auth App](images/Screenshot 2021-06-16 at 17.11.06.png)
-![MERN Auth App](images/Screenshot 2021-06-16 at 17.11.19.png)
+![MERN Auth App](https://github.com/gnyokota/mern-auth/blob/807caa951909a9e5a8db505baa366cbb5ff41bde/images/Screenshot%202021-06-16%20at%2017.10.52.png)
+![MERN Auth App](https://github.com/gnyokota/mern-auth/blob/807caa951909a9e5a8db505baa366cbb5ff41bde/images/Screenshot%202021-06-16%20at%2017.11.06.png)
+![MERN Auth App](https://github.com/gnyokota/mern-auth/blob/807caa951909a9e5a8db505baa366cbb5ff41bde/images/Screenshot%202021-06-16%20at%2017.11.19.png)
 
 This app was built using the MERN-Stack and Typescript. It was built for authentication and authorization.
 
